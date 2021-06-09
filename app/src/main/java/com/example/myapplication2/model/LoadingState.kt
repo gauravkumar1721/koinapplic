@@ -1,4 +1,4 @@
-package com.example.myapplication2
+package com.example.myapplication2.model
 
 data class LoadingState private constructor(val status: Status, val msg: String? = null){
     companion object {

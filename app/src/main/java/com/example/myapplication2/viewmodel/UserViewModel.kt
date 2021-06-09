@@ -1,9 +1,10 @@
 package com.example.myapplication2.viewmodel
 
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication2.LoadingState
+import com.example.myapplication2.model.LoadingState
 import com.example.myapplication2.Users
 import com.example.myapplication2.repo.UserRepository
 import retrofit2.Call
@@ -18,7 +19,9 @@ class UserViewModel(private val repo: UserRepository) : ViewModel(), Callback<Li
     private val _data = MutableLiveData<List<Users>>()
     val data: LiveData<List<Users>>
         get() = _data
-
+    private val _toast = MutableLiveData<String>()
+    val toast: LiveData<String>
+        get() = _toast
     init {
         fetchData()
     }
@@ -30,8 +33,14 @@ class UserViewModel(private val repo: UserRepository) : ViewModel(), Callback<Li
         if (response.isSuccessful) {
             _data.postValue(response.body())
             _loadingState.postValue(LoadingState.LOADED)
+            //Toast.makeText(this, "Data is successfully passed", Toast.LENGTH_LONG).show()
+            _toast.postValue("Data is successfully passed")
         } else {
             _loadingState.postValue(LoadingState.error(response.errorBody().toString()))
+            //Toast.makeText(this, "Error", Toast.LENGTH_LONG).show()
+            _toast.postValue(LoadingState.error(response.errorBody().toString()).toString())
+
+
         }
     }
 
